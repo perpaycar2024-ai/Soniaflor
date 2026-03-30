@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>El jardín de Raúl</title>
+<title>El jardín de Sonia</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2e3328">
 <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -398,7 +398,7 @@ let currentFichaId = null;
 
 // Sistema de apertura robusto
 function iniciarApp() {
-    const request = indexedDB.open('JardinRaulDB', 3); // Versión 3 para forzar limpieza
+    const request = indexedDB.open('soniaplantDB', 3); // Versión 3 para forzar limpieza
 
 
     request.onupgradeneeded = e => {
