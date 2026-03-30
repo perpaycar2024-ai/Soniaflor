@@ -1,0 +1,752 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>El jardín de Raúl</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2e3328">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --oliva-negro:    #1a1f16; --oliva-dark:    #252c20; --oliva:         #3d4a35;
+  --oliva-soft:     #5e6b52; --verde-escarcha:#b8c4a8; --blanco-mate:   #dde5d4;
+  --agua:           #7ec8e3; --abono:         #d4a843;
+  --acento:         #a8c87e; --dorado-suave:  #c8a85e;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background: var(--oliva-negro);
+  color: var(--blanco-mate);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(94,107,82,0.25) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 100%, rgba(26,31,22,0.6) 0%, transparent 50%);
+}
+
+/* CABECERA */
+.header-container {
+  padding: 3rem 1rem 1.5rem;
+  text-align: center;
+  position: relative;
+}
+
+.header-deco {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.header-linea {
+  height: 1px;
+  width: 40px;
+  background: linear-gradient(90deg, transparent, var(--oliva-soft));
+  border-radius: 2px;
+}
+.header-linea.derecha {
+  background: linear-gradient(90deg, var(--oliva-soft), transparent);
+}
+
+.header-hoja { font-size: 1rem; opacity: 0.7; animation: mecerse 4s ease-in-out infinite; display: inline-block; transform-origin: bottom center; }
+@keyframes mecerse { 0%,100% { transform: rotate(-8deg); } 50% { transform: rotate(8deg); } }
+
+.lista-titulo {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 2rem;
+  font-style: italic;
+  color: var(--verde-escarcha);
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 20px rgba(184,196,168,0.2);
+  line-height: 1.1;
+}
+
+.lista-subtitulo {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--oliva-soft);
+  margin-top: 6px;
+  font-weight: 300;
+}
+
+.header-separador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 14px auto 0;
+  width: 60%;
+  opacity: 0.4;
+}
+.sep-linea { flex: 1; height: 1px; background: var(--verde-escarcha); }
+.sep-rombo { font-size: 0.5rem; color: var(--verde-escarcha); }
+
+.btn-config {
+  position: absolute; right: 20px; top: 3.2rem;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  padding: 6px 8px;
+  transition: all 0.2s;
+}
+.btn-config:active { opacity: 1; background: rgba(255,255,255,0.1); }
+
+/* CATEGORÍAS */
+.cats {
+  display: flex; padding: 0 1rem; gap: 8px;
+  margin-bottom: 1.5rem; overflow-x: auto;
+  scrollbar-width: none; justify-content: center;
+}
+.cat-btn {
+  padding: 8px 16px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  color: var(--verde-escarcha);
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+.cat-btn.active {
+  background: var(--oliva-soft);
+  color: white;
+  border-color: var(--verde-escarcha);
+  box-shadow: 0 4px 12px rgba(94,107,82,0.4);
+}
+
+/* CUADRÍCULA */
+.plantas-lista { padding: 0 10px 100px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+
+.planta-card {
+  background: linear-gradient(160deg, var(--oliva) 0%, #303d28 100%);
+  aspect-ratio: 1 / 1.3;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.05) inset;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.planta-card:active { transform: scale(0.96); box-shadow: 0 2px 8px rgba(0,0,0,0.4); }
+
+.img-pwa { width: 100%; height: 70%; object-fit: cover; background: var(--oliva-soft); }
+
+.p-info-mini {
+  padding: 7px 8px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+  background: linear-gradient(0deg, rgba(0,0,0,0.15) 0%, transparent 100%);
+}
+.p-nom {
+  font-family: 'Libre Baskerville', serif;
+  font-size: 0.82rem;
+  font-style: italic;
+  line-height: 1.1;
+  margin-bottom: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--blanco-mate);
+}
+.p-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+/* FICHA DETALLE */
+#vista-ficha { display: none; position: fixed; inset: 0; background: var(--oliva-negro); z-index: 100; overflow-y: auto; }
+.ficha-hero { width: 100%; height: 35vh; object-fit: cover; opacity: 0.85; }
+.ficha-content {
+  padding: 24px 20px 30px;
+  margin-top: -36px;
+  background: linear-gradient(180deg, var(--oliva-negro) 0%, #1e2419 100%);
+  border-radius: 36px 36px 0 0;
+  position: relative;
+  box-shadow: 0 -6px 30px rgba(0,0,0,0.5);
+}
+
+.seccion-pro {
+  background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
+  padding: 18px;
+  border-radius: 20px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25), 0 1px 0 rgba(255,255,255,0.04) inset;
+}
+
+.input-edit {
+  background: transparent;
+  border: none;
+  color: var(--blanco-mate);
+  font-family: 'Libre Baskerville';
+  font-size: 1.8rem;
+  font-style: italic;
+  width: 100%;
+  text-shadow: 0 1px 8px rgba(184,196,168,0.15);
+}
+
+/* APUNTES */
+.nota-card {
+  background: rgba(255,255,255,0.03);
+  padding: 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  position: relative;
+  font-size: 0.85rem;
+  border-left: 2px solid var(--verde-escarcha);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.btn-del-nota { position: absolute; right: 8px; top: 10px; color: #ff8e8e; background: none; border: none; font-size: 1.3rem; cursor: pointer; }
+
+/* MODALES */
+#modal, #modal-zonas { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(8px); }
+.modal-box {
+  background: linear-gradient(160deg, #2e3828 0%, #252c20 100%);
+  color: var(--blanco-mate);
+  padding: 26px;
+  border-radius: 26px;
+  width: 100%;
+  max-width: 350px;
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.06) inset;
+}
+input, select {
+  width: 100%; padding: 12px; margin: 8px 0;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.25);
+  color: white;
+  font-family: inherit;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.btn-nueva {
+  position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+  width: 62px; height: 62px;
+  border-radius: 22px;
+  background: linear-gradient(135deg, var(--verde-escarcha) 0%, var(--acento) 100%);
+  border: none; font-size: 30px;
+  color: var(--oliva-dark);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5), 0 2px 0 rgba(255,255,255,0.2) inset;
+  z-index: 10; cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.btn-nueva:active { transform: translateX(-50%) scale(0.92); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+.btn-accion {
+  width: 100%; padding: 15px; border-radius: 15px; border: none;
+  font-weight: 700; margin-top: 10px; cursor: pointer;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  transition: transform 0.1s, filter 0.1s;
+}
+.btn-accion:active { transform: scale(0.97); filter: brightness(0.9); }
+
+.zona-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255,255,255,0.05); margin-bottom: 5px; border-radius: 10px; }
+.foto-opcion-row { display: flex; gap: 8px; margin: 10px 0; }
+.btn-foto-op { flex: 1; padding: 12px 6px; border: 1px solid var(--oliva-soft); background: transparent; color: var(--verde-escarcha); border-radius: 10px; font-size: 0.7rem; font-weight: 700; cursor: pointer; text-align: center; transition: all 0.15s; }
+.btn-foto-op.active { background: var(--oliva-soft); border-color: var(--verde-escarcha); color: white; }
+.emoji-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin: 10px 0; max-height: 180px; overflow-y: auto; }
+.emoji-btn { padding: 10px; font-size: 1.4rem; background: rgba(255,255,255,0.05); border: 2px solid transparent; border-radius: 10px; cursor: pointer; text-align: center; transition: transform 0.1s; }
+.emoji-btn:active { transform: scale(0.9); }
+.emoji-btn.selected { border-color: var(--verde-escarcha); background: rgba(184,196,168,0.15); }
+.btn-cambiar-foto { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: var(--verde-escarcha); border-radius: 12px; padding: 10px 14px; font-size: 0.72rem; font-weight: 700; cursor: pointer; margin-top: 8px; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.2); letter-spacing: 0.05em; transition: background 0.2s; }
+.btn-cambiar-foto:active { background: rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+
+
+<div id="vista-lista">
+  <div class="header-container">
+    <div class="header-deco">
+      <div class="header-linea"></div>
+      <span class="header-hoja">🌿</span>
+      <div class="header-linea derecha"></div>
+    </div>
+    <div class="lista-titulo">El jardín de Raúl</div>
+    <div class="lista-subtitulo">cuaderno de plantas</div>
+    <div class="header-separador">
+      <div class="sep-linea"></div>
+      <div class="sep-rombo">◆</div>
+      <div class="sep-linea"></div>
+    </div>
+    <button class="btn-config" onclick="abrirModalZonas()">⚙️</button>
+  </div>
+  <div id="cats-container" class="cats"></div>
+  <div id="plantas-lista" class="plantas-lista"></div>
+  <button class="btn-nueva" id="btn-nueva">+</button>
+</div>
+
+
+<div id="modal-zonas">
+  <div class="modal-box">
+    <h3 style="margin-bottom:15px; color:var(--verde-escarcha);">Gestionar Zonas</h3>
+    <div id="lista-zonas-edit" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px;"></div>
+    <input type="text" id="nueva-zona-nombre" placeholder="Nombre nueva zona...">
+    <button onclick="addZona()" class="btn-accion" style="background:var(--verde-escarcha); color:var(--oliva-dark);">AÑADIR ZONA</button>
+    <button onclick="cerrarModalZonas()" style="width:100%; background:none; border:none; color:white; margin-top:15px; font-size:0.8rem;">CERRAR</button>
+    <button onclick="exportarBackup()" style="width:100%; background:none; border:none; color:var(--verde-escarcha); margin-top:8px; font-size:0.75rem; opacity:0.7;">⬇️ Exportar backup JSON</button>
+  </div>
+</div>
+
+
+<!-- Modal cambiar foto/icono -->
+<div id="modal-cambiar-foto" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:300; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(5px);">
+  <div class="modal-box" style="max-height:85vh; overflow-y:auto;">
+    <h3 style="color:var(--verde-escarcha); margin-bottom:12px;">Cambiar imagen</h3>
+    <div class="foto-opcion-row">
+      <button class="btn-foto-op active" id="op-foto" onclick="selModoCambio('foto')">📷 Foto</button>
+      <button class="btn-foto-op" id="op-emoji" onclick="selModoCambio('emoji')">😊 Icono</button>
+    </div>
+    <div id="panel-cambio-foto">
+      <div style="display:flex; gap:8px; margin:10px 0;">
+        <label style="flex:1; padding:12px; border:1px solid var(--verde-escarcha); border-radius:10px; text-align:center; font-size:0.7rem; cursor:pointer;">📸 CÁMARA<input type="file" accept="image/*" capture="environment" style="display:none" onchange="handleCambioFoto(this)"></label>
+        <label style="flex:1; padding:12px; border:1px solid var(--verde-escarcha); border-radius:10px; text-align:center; font-size:0.7rem; cursor:pointer;">🖼️ GALERÍA<input type="file" accept="image/*" style="display:none" onchange="handleCambioFoto(this)"></label>
+      </div>
+      <div id="status-cambio-foto" style="font-size:0.7rem; text-align:center; color:var(--verde-escarcha); display:none; margin-bottom:8px;">✅ Nueva foto lista</div>
+    </div>
+    <div id="panel-cambio-emoji" style="display:none;">
+      <div class="emoji-grid" id="emoji-grid"></div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:12px;">
+      <button onclick="cerrarModalCambiarFoto()" style="flex:1; padding:12px; background:rgba(255,255,255,0.05); color:white; border-radius:10px; border:none;">CANCELAR</button>
+      <button onclick="guardarCambioImagen()" style="flex:1; padding:12px; background:var(--verde-escarcha); color:var(--oliva-dark); border-radius:10px; border:none; font-weight:bold;">GUARDAR</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="vista-ficha">
+  <button onclick="cerrarFicha()" style="position:fixed; top:20px; left:20px; width:40px; height:40px; border-radius:12px; border:none; background:var(--oliva-soft); color:white; z-index:110;">←</button>
+  <img id="ficha-img" class="ficha-hero" src="">
+  <div id="ficha-emoji-hero" style="display:none; width:100%; height:35vh; align-items:center; justify-content:center; font-size:6rem; background:var(--oliva-soft);">🪴</div>
+  <div class="ficha-content">
+    <div class="seccion-pro" style="background:none; border:none; padding:0 0 15px;">
+      <input type="text" id="edit-nombre" class="input-edit" onchange="saveEdit()">
+      <select id="edit-cat" style="background:transparent; color:var(--verde-escarcha); border:none; font-weight:bold;" onchange="saveEdit()"></select>
+      <button class="btn-cambiar-foto" onclick="abrirModalCambiarFoto()">📷 Cambiar imagen / icono</button>
+    </div>
+    <div class="seccion-pro">
+      <div id="info-riego" style="color:var(--agua); font-weight:bold;"></div>
+      <button onclick="regarYa()" class="btn-accion" style="background:var(--agua); color:var(--oliva-dark);">REGAR HOY</button>
+    </div>
+    <div class="seccion-pro">
+      <div id="info-abono" style="color:var(--abono); font-weight:bold; margin-bottom:8px;"></div>
+      <input type="text" id="tipo-abono-input" placeholder="¿Qué abono usas?">
+      <button onclick="abonarYa()" class="btn-accion" style="background:var(--abono); color:var(--oliva-dark);">ABONAR HOY</button>
+    </div>
+    <div class="seccion-pro">
+      <h3 style="margin-bottom:12px; font-family:'Libre Baskerville'; color:var(--verde-escarcha);">Apuntes</h3>
+      <div id="lista-apuntes"></div>
+      <div style="display:flex; gap:8px; margin-top:10px;">
+          <input type="text" id="nueva-nota" placeholder="Nota..." style="margin:0; flex:1;">
+          <button onclick="addNota()" style="background:var(--verde-escarcha); color:var(--oliva-dark); border-radius:10px; width:45px; font-weight:bold;">+</button>
+      </div>
+    </div>
+    <button onclick="eliminarPlanta()" style="width:100%; color:rgba(255,255,255,0.2); background:none; border:none; font-size:0.7rem; margin-top:20px;">ELIMINAR PLANTA</button>
+  </div>
+</div>
+
+
+<div id="modal">
+  <div class="modal-box">
+    <h3 style="color:var(--verde-escarcha); margin-bottom:15px;">Nueva Planta</h3>
+    <input type="text" id="ins-nombre" placeholder="Nombre...">
+    <div style="display:flex; gap:8px; margin:10px 0;">
+      <label style="flex:1; padding:12px; border:1px solid var(--verde-escarcha); border-radius:10px; text-align:center; font-size:0.7rem; cursor:pointer;" onclick="selModoNueva('foto')">📸 CAM<input type="file" accept="image/*" capture="environment" style="display:none" onchange="handleImgSelect(this)"></label>
+      <label style="flex:1; padding:12px; border:1px solid var(--verde-escarcha); border-radius:10px; text-align:center; font-size:0.7rem; cursor:pointer;" onclick="selModoNueva('foto')">🖼️ GAL<input type="file" accept="image/*" style="display:none" onchange="handleImgSelect(this)"></label>
+      <button style="flex:1; padding:12px; border:1px solid var(--verde-escarcha); border-radius:10px; text-align:center; font-size:0.7rem; background:transparent; color:var(--verde-escarcha); cursor:pointer;" id="new-op-emoji" onclick="selModoNueva('emoji')">😊 ICONO</button>
+    </div>
+    <div id="status-img" style="font-size:0.7rem; text-align:center; color:var(--verde-escarcha); display:none; margin-bottom:8px;">✅ Foto lista</div>
+    <div id="new-panel-emoji" style="display:none;">
+      <div class="emoji-grid" id="new-emoji-grid"></div>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:10px;">
+      <button onclick="cerrarModal()" style="flex:1; padding:12px; background:rgba(255,255,255,0.05); color:white; border-radius:10px; border:none;">VOLVER</button>
+      <button onclick="addPlant()" style="flex:1; padding:12px; background:var(--verde-escarcha); color:var(--oliva-dark); border-radius:10px; border:none; font-weight:bold;">GUARDAR</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+let db;
+let selectedImgData = null;
+let selectedEmojiNueva = null;
+let modoNueva = 'foto';
+let activeCat = '';
+let currentFichaId = null;
+
+
+// Sistema de apertura robusto
+function iniciarApp() {
+    const request = indexedDB.open('JardinRaulDB', 3); // Versión 3 para forzar limpieza
+
+
+    request.onupgradeneeded = e => {
+        const dbInst = e.target.result;
+        if(!dbInst.objectStoreNames.contains('plantas')) dbInst.createObjectStore('plantas', { keyPath: 'id' });
+        if(!dbInst.objectStoreNames.contains('config')) dbInst.createObjectStore('config', { keyPath: 'id' });
+    };
+
+
+    request.onsuccess = e => {
+        db = e.target.result;
+        initZonas();
+    };
+
+
+    request.onerror = e => alert("Error abriendo base de datos. Por favor, reinicia el navegador.");
+}
+
+
+function initZonas() {
+    const tx = db.transaction(['config'], 'readwrite');
+    const store = tx.objectStore('config');
+    store.get('zonas').onsuccess = e => {
+        let zonas;
+        if (!e.target.result) {
+            zonas = ['Terraza', 'Colgadas', 'Salón'];
+            store.add({id: 'zonas', lista: zonas});
+        } else {
+            zonas = e.target.result.lista;
+        }
+        activeCat = zonas[0] || '';
+        renderCategorias(zonas);
+        renderLista();
+    };
+}
+
+
+function renderCategorias(zonas) {
+    const cont = document.getElementById('cats-container');
+    const selectFicha = document.getElementById('edit-cat');
+    cont.innerHTML = zonas.map(z => `<button class="cat-btn ${z===activeCat?'active':''}" onclick="cambiarCat('${z}')">${z}</button>`).join('');
+    selectFicha.innerHTML = zonas.map(z => `<option value="${z}" ${z===activeCat?'selected':''}>${z.toUpperCase()}</option>`).join('');
+}
+
+
+function cambiarCat(z) { activeCat = z; renderCategoriasActuales(); renderLista(); }
+
+
+function renderCategoriasActuales() {
+    const tx = db.transaction(['config'], 'readonly');
+    tx.objectStore('config').get('zonas').onsuccess = e => {
+        if(e.target.result) renderCategorias(e.target.result.lista);
+    };
+}
+
+
+function abrirModalZonas() {
+    document.getElementById('modal-zonas').style.display = 'flex';
+    const tx = db.transaction(['config'], 'readonly');
+    tx.objectStore('config').get('zonas').onsuccess = e => {
+        const zonas = e.target.result.lista;
+        document.getElementById('lista-zonas-edit').innerHTML = zonas.map(z => `
+            <div class="zona-item">
+                <span>${z}</span>
+                <button onclick="borrarZona('${z}')" style="background:none; border:none; color:#ff8e8e; font-weight:bold;">✕</button>
+            </div>`).join('');
+    };
+}
+
+
+function addZona() {
+    const nueva = document.getElementById('nueva-zona-nombre').value.trim();
+    if(!nueva) return;
+    const tx = db.transaction(['config'], 'readwrite');
+    const store = tx.objectStore('config');
+    store.get('zonas').onsuccess = e => {
+        const d = e.target.result;
+        if(!d.lista.includes(nueva)) d.lista.push(nueva);
+        store.put(d);
+        tx.oncomplete = () => { document.getElementById('nueva-zona-nombre').value = ''; abrirModalZonas(); renderCategoriasActuales(); };
+    };
+}
+
+
+function borrarZona(z) {
+    if(confirm(`¿Borrar zona "${z}"?`)) {
+        const tx = db.transaction(['config'], 'readwrite');
+        const store = tx.objectStore('config');
+        store.get('zonas').onsuccess = e => {
+            const d = e.target.result;
+            d.lista = d.lista.filter(item => item !== z);
+            if(activeCat === z) activeCat = d.lista[0] || '';
+            store.put(d);
+            tx.oncomplete = () => { abrirModalZonas(); renderCategoriasActuales(); renderLista(); };
+        };
+    }
+}
+
+
+function daysSince(iso) { return Math.floor(Math.abs(new Date()-new Date(iso))/86400000); }
+
+
+function handleImgSelect(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = e => { selectedImgData = e.target.result; document.getElementById('status-img').style.display = 'block'; };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+
+function selModoNueva(modo) {
+    modoNueva = modo;
+    document.getElementById('new-panel-emoji').style.display = modo === 'emoji' ? 'block' : 'none';
+    const btnEmoji = document.getElementById('new-op-emoji');
+    btnEmoji.style.background = modo === 'emoji' ? 'var(--oliva-soft)' : 'transparent';
+    btnEmoji.style.color = 'var(--verde-escarcha)';
+    if (modo === 'emoji' && !document.getElementById('new-emoji-grid').innerHTML) {
+        selectedEmojiNueva = EMOJIS[0];
+        document.getElementById('new-emoji-grid').innerHTML = EMOJIS.map(e =>
+            `<button class="emoji-btn ${e === selectedEmojiNueva ? 'selected' : ''}" onclick="selEmojiNueva('${e}')">${e}</button>`
+        ).join('');
+    }
+}
+
+function selEmojiNueva(e) {
+    selectedEmojiNueva = e;
+    document.querySelectorAll('#new-emoji-grid .emoji-btn').forEach(b => b.classList.toggle('selected', b.textContent === e));
+}
+
+function addPlant() {
+    const name = document.getElementById('ins-nombre').value;
+    if(!name || !activeCat) return;
+    const foto  = modoNueva === 'foto'  ? (selectedImgData || null) : null;
+    const emoji = modoNueva === 'emoji' ? (selectedEmojiNueva || '🪴') : null;
+    const p = { id: Date.now().toString(), name, category: activeCat, foto, emoji, lastWatered: new Date().toISOString(), lastFertilized: new Date().toISOString(), ultimoAbonoUsado: 'Ninguno', notas: [] };
+    const tx = db.transaction(['plantas'], 'readwrite');
+    tx.objectStore('plantas').add(p);
+    tx.oncomplete = () => {
+        renderLista(); cerrarModal();
+        selectedImgData = null; selectedEmojiNueva = null; modoNueva = 'foto';
+        document.getElementById('status-img').style.display = 'none';
+        document.getElementById('ins-nombre').value = '';
+        document.getElementById('new-emoji-grid').innerHTML = '';
+        selModoNueva('foto');
+    };
+}
+
+
+function renderNotas(notas) {
+    const nCont = document.getElementById('lista-apuntes');
+    nCont.innerHTML = notas.map((n, index) => `
+        <div class="nota-card">
+            <span style="font-size:0.65rem; opacity:0.5; display:block; margin-bottom:4px;">${n.fecha}</span>
+            <div style="padding-right:25px;">${n.texto}</div>
+            <button class="btn-del-nota" onclick="deleteNota(${index})">×</button>
+        </div>`).join('');
+}
+
+
+function deleteNota(index) {
+    if(confirm("¿Borrar nota?")) {
+        updatePlantaData(p => { p.notas.splice(index, 1); }, () => abrirFicha(currentFichaId));
+    }
+}
+
+
+function saveEdit() {
+    const newName = document.getElementById('edit-nombre').value;
+    const newCat = document.getElementById('edit-cat').value;
+    updatePlantaData(p => { p.name = newName; p.category = newCat; }, renderLista);
+}
+
+
+function addNota() {
+    const texto = document.getElementById('nueva-nota').value.trim();
+    if(!texto) return;
+    updatePlantaData(p => { 
+        if(!p.notas) p.notas = []; 
+        p.notas.unshift({ texto, fecha: new Date().toLocaleDateString() }); 
+    }, () => { document.getElementById('nueva-nota').value=''; abrirFicha(currentFichaId); });
+}
+
+
+function regarYa() { updatePlantaData(p => p.lastWatered = new Date().toISOString(), () => abrirFicha(currentFichaId)); }
+function abonarYa() {
+    const abonoUsado = document.getElementById('tipo-abono-input').value || 'Genérico';
+    updatePlantaData(p => { p.lastFertilized = new Date().toISOString(); p.ultimoAbonoUsado = abonoUsado; }, () => { document.getElementById('tipo-abono-input').value = ''; abrirFicha(currentFichaId); });
+}
+
+
+function updatePlantaData(callback, onFinish) {
+    const tx = db.transaction(['plantas'], 'readwrite');
+    const store = tx.objectStore('plantas');
+    store.get(currentFichaId).onsuccess = e => { const p = e.target.result; callback(p); store.put(p); tx.oncomplete = onFinish; };
+}
+
+
+function eliminarPlanta() {
+    if(confirm("¿Eliminar planta?")) {
+        const tx = db.transaction(['plantas'], 'readwrite');
+        tx.objectStore('plantas').delete(currentFichaId);
+        tx.oncomplete = () => { renderLista(); cerrarFicha(); };
+    }
+}
+
+
+function cerrarFicha() { document.getElementById('vista-ficha').style.display = 'none'; renderLista(); }
+function cerrarModal() { document.getElementById('modal').style.display = 'none'; }
+function cerrarModalZonas() { document.getElementById('modal-zonas').style.display = 'none'; }
+document.getElementById('btn-nueva').onclick = () => document.getElementById('modal').style.display = 'flex';
+
+
+// ===== CAMBIAR IMAGEN / EMOJI =====
+const EMOJIS = ['🌿','🌸','🌹','🌷','🌻','💐','🌺','🍃','🌱','🌵','🪴','🌳','🌴','🍋','🍊','🍓','🫒','🎋','💜','🤍','🍀','🌼','🌾','🌝','🫧'];
+let modoCambio = 'foto';
+let nuevaFotoData = null;
+let nuevoEmojiSeleccionado = null;
+
+function abrirModalCambiarFoto() {
+    modoCambio = 'foto';
+    nuevaFotoData = null;
+    nuevoEmojiSeleccionado = null;
+    selModoCambio('foto');
+    document.getElementById('status-cambio-foto').style.display = 'none';
+    // Construir grid de emojis
+    document.getElementById('emoji-grid').innerHTML = EMOJIS.map(e =>
+        `<button class="emoji-btn" onclick="selEmoji('${e}')">${e}</button>`
+    ).join('');
+    document.getElementById('modal-cambiar-foto').style.display = 'flex';
+}
+
+function cerrarModalCambiarFoto() {
+    document.getElementById('modal-cambiar-foto').style.display = 'none';
+    nuevaFotoData = null;
+    nuevoEmojiSeleccionado = null;
+}
+
+function selModoCambio(modo) {
+    modoCambio = modo;
+    document.getElementById('panel-cambio-foto').style.display  = modo === 'foto'  ? 'block' : 'none';
+    document.getElementById('panel-cambio-emoji').style.display = modo === 'emoji' ? 'block' : 'none';
+    document.getElementById('op-foto').classList.toggle('active',  modo === 'foto');
+    document.getElementById('op-emoji').classList.toggle('active', modo === 'emoji');
+    if (modo === 'emoji') nuevoEmojiSeleccionado = EMOJIS[0];
+}
+
+function selEmoji(e) {
+    nuevoEmojiSeleccionado = e;
+    document.querySelectorAll('.emoji-btn').forEach(b => b.classList.toggle('selected', b.textContent === e));
+}
+
+function handleCambioFoto(input) {
+    if (!input.files || !input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+        nuevaFotoData = ev.target.result;
+        document.getElementById('status-cambio-foto').style.display = 'block';
+    };
+    reader.readAsDataURL(input.files[0]);
+}
+
+function guardarCambioImagen() {
+    if (modoCambio === 'foto' && !nuevaFotoData) { cerrarModalCambiarFoto(); return; }
+    if (modoCambio === 'emoji' && !nuevoEmojiSeleccionado) { cerrarModalCambiarFoto(); return; }
+    updatePlantaData(p => {
+        if (modoCambio === 'foto') { p.foto = nuevaFotoData; p.emoji = null; }
+        else { p.emoji = nuevoEmojiSeleccionado; p.foto = null; }
+    }, () => { cerrarModalCambiarFoto(); abrirFicha(currentFichaId); });
+}
+
+
+// ===== RENDER con soporte emoji =====
+// Sobreescribimos renderLista para mostrar emoji si no hay foto
+const _renderListaOriginal = renderLista;
+
+// Redefinimos renderLista para soportar emojis
+function renderLista() {
+    const cont = document.getElementById('plantas-lista');
+    const tx = db.transaction(['plantas'], 'readonly');
+    tx.objectStore('plantas').getAll().onsuccess = e => {
+        const plants = e.target.result.filter(p => p.category === activeCat);
+        cont.innerHTML = plants.map(p => {
+            const imgHTML = p.foto
+                ? `<img src="${p.foto}" class="img-pwa">`
+                : `<div class="img-pwa" style="display:flex;align-items:center;justify-content:center;font-size:3rem;">${p.emoji || '🪴'}</div>`;
+            return `
+            <div class="planta-card" onclick="abrirFicha('${p.id}')">
+                ${imgHTML}
+                <div class="p-info-mini">
+                    <div class="p-nom">${p.name}</div>
+                    <div class="p-meta">
+                        <span style="color:var(--agua)">💧${daysSince(p.lastWatered)}</span>
+                        <span style="color:var(--abono)">🌿${daysSince(p.lastFertilized)}</span>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    };
+}
+
+// Sobreescribimos abrirFicha para mostrar emoji si no hay foto
+const _abrirFichaOriginal = abrirFicha;
+function abrirFicha(id) {
+    currentFichaId = id;
+    db.transaction(['plantas']).objectStore('plantas').get(id).onsuccess = e => {
+        const p = e.target.result;
+        document.getElementById('edit-nombre').value = p.name;
+        document.getElementById('edit-cat').value = p.category;
+        // Foto o emoji hero
+        const imgEl = document.getElementById('ficha-img');
+        const emojiEl = document.getElementById('ficha-emoji-hero');
+        if (p.foto) {
+            imgEl.src = p.foto; imgEl.style.display = 'block';
+            emojiEl.style.display = 'none';
+        } else {
+            imgEl.style.display = 'none';
+            emojiEl.style.display = 'flex';
+            emojiEl.textContent = p.emoji || '🪴';
+        }
+        document.getElementById('info-riego').innerText = `Último riego: hace ${daysSince(p.lastWatered)} días`;
+        document.getElementById('info-abono').innerHTML = `Último abono: hace ${daysSince(p.lastFertilized)} días <br><small style="opacity:0.6;">Tipo: ${p.ultimoAbonoUsado || '-'}</small>`;
+        renderNotas(p.notas || []);
+        document.getElementById('vista-ficha').style.display = 'block';
+    };
+}
+
+
+// ===== BACKUP EXPORTAR =====
+function exportarBackup() {
+    const tx = db.transaction(['plantas', 'config'], 'readonly');
+    const plantas = [];
+    tx.objectStore('plantas').getAll().onsuccess = e => {
+        e.target.result.forEach(p => plantas.push(p));
+        tx.objectStore('config').get('zonas').onsuccess = ev => {
+            const backup = { fecha: new Date().toISOString(), zonas: ev.target.result?.lista || [], plantas };
+            const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = `jardin-backup-${new Date().toISOString().slice(0,10)}.json`;
+            a.click(); URL.revokeObjectURL(url);
+        };
+    };
+}
+
+
+// Arrancamos
+iniciarApp();
+</script>
+</body>
+</html>
