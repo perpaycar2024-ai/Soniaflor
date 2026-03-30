@@ -1,5 +1,5 @@
 // VERSIÓN 4 — fuerza actualización borrando cachés anteriores
-const CACHE_NAME = 'jardin-raul-v4';
+const CACHE_NAME = 'jardin-Sonia-v4';
 const ASSETS = [
   './Index.html',
   './manifest.json',
