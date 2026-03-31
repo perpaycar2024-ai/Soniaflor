@@ -2,7 +2,7 @@
   "name": "El jardín de Sonia",
   "short_name": "Jardín Sonia",
   "description": "Cuaderno de plantas personal",
-  "start_url": "./Index.html",
+  "start_url": "/soniaflor/Index.html",
   "display": "standalone",
   "background_color": "#1a1f16",
   "theme_color": "#2e3328",
