@@ -1,7 +1,7 @@
 // VERSIÓN 4 — fuerza actualización borrando cachés anteriores
 const CACHE_NAME = 'jardin-Sonia-v4';
 const ASSETS = [
-  './Index.html',
+  '/Soniaflor/Index.html',
   './manifest.json',
   'https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Josefin+Sans:wght@300;400;600;700&display=swap'
 ];
