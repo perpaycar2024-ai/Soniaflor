@@ -1,5 +1,5 @@
-// VERSIÓN 6 — fuerza actualización borrando cachés anteriores
-const CACHE_NAME = 'jardin-Sonia-v6';
+// VERSIÓN 7 — fuerza actualización borrando cachés anteriores
+const CACHE_NAME = 'jardin-Sonia-v7';
 const ASSETS = [
   './index.html',
   './manifest.json',
